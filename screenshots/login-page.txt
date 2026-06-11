@@ -1,0 +1,3 @@
+Screenshot placeholder — replace with actual screenshot of the login page.
+
+To capture: Run the app and navigate to http://localhost:5173/login
