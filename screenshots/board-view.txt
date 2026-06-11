@@ -1,0 +1,3 @@
+Screenshot placeholder — replace with actual screenshot of the board Kanban view.
+
+To capture: Run the app, create a board, and navigate to http://localhost:5173/board/{id}
