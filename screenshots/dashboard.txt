@@ -1,3 +1,0 @@
-Screenshot placeholder — replace with actual screenshot of the dashboard page.
-
-To capture: Run the app and navigate to http://localhost:5173/dashboard

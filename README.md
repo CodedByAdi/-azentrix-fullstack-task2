@@ -16,11 +16,11 @@
 
 | Login | Dashboard |
 |---|---|
-| ![Login Page](screenshots/login-page.png) | ![Dashboard](screenshots/dashboard.png) |
+| ![Login Page](screenshots/login-page.png) | ![Dashboard](screenshots/dashboard1.png) |
 
 | Board View | Task Management |
 |---|---|
-| ![Board View](screenshots/board-view.png) | ![Task Management](screenshots/task-management.png) |
+| ![Board View](screenshots/Board-view.png) | ![Task Management](screenshots/task-management.png) |
 
 ---
 

@@ -1,3 +1,0 @@
-Screenshot placeholder — replace with actual screenshot of the task/card modal.
-
-To capture: Run the app, open a board, and click a card or the + button on a column.
