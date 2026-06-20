@@ -31,8 +31,25 @@ export default function BoardPage() {
       }
     };
     loadBoard();
-    fetchBoard();
-  }, [boardId]);
+
+    let timeoutId;
+    let isMounted = true;
+
+    const startPolling = async () => {
+      if (!isMounted) return;
+      await fetchBoard();
+      if (isMounted) {
+        timeoutId = setTimeout(startPolling, 5000); // 5s polling interval
+      }
+    };
+
+    startPolling();
+
+    return () => {
+      isMounted = false;
+      clearTimeout(timeoutId);
+    };
+  }, [boardId, fetchBoard, navigate]);
 
   const handleAddCard = (columnId) => {
     setModalConfig({ mode: 'create', columnId });

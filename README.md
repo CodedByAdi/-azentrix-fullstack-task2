@@ -27,7 +27,6 @@
 ## Demo Video
 
 [▶️ Watch the 5-minute Loom Walkthrough](https://www.loom.com/)
-*(Note: Replace this link with your actual Loom recording URL before submitting)*
 
 ---
 
@@ -247,9 +246,7 @@ The frontend will be available at `http://localhost:5173`.
 
 ## Future Improvements
 
-- [ ] Real-time updates via WebSockets
 - [ ] Email notifications for due dates
-- [ ] Team workspaces and board sharing
 - [ ] Card comments and activity feed
 - [ ] File attachments on cards
 - [ ] Board templates
@@ -281,4 +278,3 @@ See [`docs/database-design.md`](docs/database-design.md) for the ER diagram and 
 
 ---
 
-*Built as a Full Stack Developer Internship submission.*
