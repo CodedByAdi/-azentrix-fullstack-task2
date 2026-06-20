@@ -12,9 +12,9 @@
 
 ---
 
-## Live Demo 🚀
+## Live Demo 
 
-- **Frontend (Vercel):** [Insert Vercel URL Here]
+- **Frontend (Vercel):** [https://azentrix-fullstack-task2-mu.vercel.app/](https://azentrix-fullstack-task2-mu.vercel.app/)
 - **Backend API (Railway):** [Insert Railway URL Here]
 
 ---
