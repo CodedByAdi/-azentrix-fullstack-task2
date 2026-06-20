@@ -2,7 +2,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=white" />
-  <img src="https://img.shields.io/badge/FastAPI-0.111-009688?style=for-the-badge&logo=fastapi&logoColor=white" />
+  <img src="https://img.shields.io/badge/FastAPI-0.136-009688?style=for-the-badge&logo=fastapi&logoColor=white" />
   <img src="https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white" />
   <img src="https://img.shields.io/badge/TailwindCSS-3-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" />
   <img src="https://img.shields.io/badge/JWT-Auth-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white" />
@@ -24,6 +24,13 @@
 
 ---
 
+## Demo Video
+
+[▶️ Watch the 5-minute Loom Walkthrough](https://www.loom.com/)
+*(Note: Replace this link with your actual Loom recording URL before submitting)*
+
+---
+
 ## Features
 
 ### Authentication
@@ -31,6 +38,12 @@
 - Role-based access: **Admin** and **Member**
 - Auto-login after registration
 - Persistent sessions via localStorage
+
+### Admin User Management
+- View all registered users
+- Change user roles (Admin / Member)
+- Delete users securely
+- Protected admin-only dashboard
 
 ### Boards
 - Create, edit, and delete boards
@@ -125,8 +138,8 @@ taskflow/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/taskflow.git
-cd taskflow
+git clone https://github.com/CodedByAdi/-azentrix-fullstack-task2.git
+cd -azentrix-fullstack-task2
 ```
 
 ---
@@ -216,6 +229,9 @@ The frontend will be available at `http://localhost:5173`.
 | `POST` | `/auth/register` | Register new user |
 | `POST` | `/auth/login` | Login and get JWT token |
 | `GET` | `/auth/me` | Get current user |
+| `GET` | `/users/` | List all users (Admin only) |
+| `PUT` | `/users/{id}/role` | Update user role (Admin only) |
+| `DELETE` | `/users/{id}` | Delete user (Admin only) |
 | `GET` | `/boards/` | List all boards |
 | `POST` | `/boards/` | Create a board |
 | `PATCH` | `/boards/{id}` | Update a board |
@@ -231,7 +247,6 @@ The frontend will be available at `http://localhost:5173`.
 
 ## Future Improvements
 
-- [ ] Drag-and-drop card reordering
 - [ ] Real-time updates via WebSockets
 - [ ] Email notifications for due dates
 - [ ] Team workspaces and board sharing
@@ -242,7 +257,13 @@ The frontend will be available at `http://localhost:5173`.
 
 ---
 
-## Architecture Decisions
+## Architecture
+
+TaskFlow uses a modern, decoupled architecture:
+- **Frontend**: React SPA communicating with the backend via REST APIs. Uses custom hooks (`useCards`, `useBoards`) for state handling.
+- **Backend**: FastAPI layered architecture. Routers handle HTTP requests, services contain business logic, and models define the database schema.
+- **Database**: Relational data model in MySQL with strict foreign key constraints and cascade deletes to ensure data integrity.
+- **Authentication**: Stateless JWT token-based authentication.
 
 See [`docs/architecture-decisions.md`](docs/architecture-decisions.md) for detailed reasoning behind every tech choice.
 

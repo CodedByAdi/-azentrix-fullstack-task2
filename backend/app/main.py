@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import auth, boards, columns, cards, dashboard
+from app.routers import auth, boards, columns, cards, dashboard, users
 
 app = FastAPI(
     title="TaskFlow API",
@@ -24,6 +24,7 @@ app.include_router(boards.router)
 app.include_router(columns.router)
 app.include_router(cards.router)
 app.include_router(dashboard.router)
+app.include_router(users.router)
 
 
 @app.get("/", tags=["Health"])

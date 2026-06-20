@@ -21,6 +21,11 @@ class CardUpdate(BaseModel):
     assigned_user_ids: Optional[List[int]] = None
 
 
+class CardMove(BaseModel):
+    column_id: int
+    position: int = 0
+
+
 class AssignedUserOut(BaseModel):
     id: int
     name: str

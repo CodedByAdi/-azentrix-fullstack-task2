@@ -2,8 +2,20 @@ from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 from app.models.card import Card
 from app.models.card_assignment import CardAssignment
+from app.models.column import TaskColumn
+from app.models.board import Board
 from app.models.user import User
 from app.schemas.card import CardCreate, CardUpdate
+
+
+def _verify_card_ownership(db: Session, card: Card, user_id: int) -> None:
+    """Ensure the card belongs to a board owned by the given user."""
+    col = db.query(TaskColumn).filter(TaskColumn.id == card.column_id).first()
+    if not col:
+        raise HTTPException(status_code=404, detail="Column not found")
+    board = db.query(Board).filter(Board.id == col.board_id, Board.owner_id == user_id).first()
+    if not board:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to modify this card")
 
 
 def get_cards_for_column(db: Session, column_id: int):
@@ -38,6 +50,7 @@ def update_card(db: Session, card_id: int, data: CardUpdate, user_id: int) -> Ca
     card = db.query(Card).filter(Card.id == card_id).first()
     if not card:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Card not found")
+    _verify_card_ownership(db, card, user_id)
 
     if data.title is not None:
         card.title = data.title
@@ -58,12 +71,52 @@ def update_card(db: Session, card_id: int, data: CardUpdate, user_id: int) -> Ca
     return _attach_assigned_users(db, card)
 
 
-def delete_card(db: Session, card_id: int) -> None:
+def delete_card(db: Session, card_id: int, user_id: int) -> None:
     card = db.query(Card).filter(Card.id == card_id).first()
     if not card:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Card not found")
+    _verify_card_ownership(db, card, user_id)
     db.delete(card)
     db.commit()
+
+
+def move_card(db: Session, card_id: int, target_column_id: int, new_position: int, user_id: int) -> Card:
+    """Move a card to a target column at the given position."""
+    card = db.query(Card).filter(Card.id == card_id).first()
+    if not card:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Card not found")
+    _verify_card_ownership(db, card, user_id)
+
+    source_column_id = card.column_id
+    card.column_id = target_column_id
+    card.position = new_position
+    db.flush()
+
+    # Re-index positions in the target column
+    target_cards = (
+        db.query(Card)
+        .filter(Card.column_id == target_column_id, Card.id != card.id)
+        .order_by(Card.position)
+        .all()
+    )
+    target_cards.insert(new_position, card)
+    for idx, c in enumerate(target_cards):
+        c.position = idx
+
+    # Re-index source column if the card moved between columns
+    if source_column_id != target_column_id:
+        source_cards = (
+            db.query(Card)
+            .filter(Card.column_id == source_column_id)
+            .order_by(Card.position)
+            .all()
+        )
+        for idx, c in enumerate(source_cards):
+            c.position = idx
+
+    db.commit()
+    db.refresh(card)
+    return _attach_assigned_users(db, card)
 
 
 def _sync_assignments(db: Session, card: Card, user_ids: list[int]) -> None:

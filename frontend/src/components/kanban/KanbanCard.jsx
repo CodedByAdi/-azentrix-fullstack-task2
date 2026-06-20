@@ -1,21 +1,47 @@
 import { formatDate, isPastDue } from '../../utils/formatDate';
 import PriorityBadge from '../task/PriorityBadge';
-import { Calendar, User, Trash2 } from 'lucide-react';
+import { Calendar, Trash2 } from 'lucide-react';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 export default function KanbanCard({ card, onClick, onDelete }) {
   const pastDue = isPastDue(card.due_date);
 
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: card.id,
+    data: {
+      type: 'Card',
+      card,
+    },
+  });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
   return (
     <div
-      className="group bg-gray-900 border border-gray-700/60 rounded-xl p-4 cursor-pointer hover:border-indigo-500/50 hover:shadow-lg hover:shadow-indigo-500/5 transition-all duration-200"
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      className={`group bg-gray-900 border ${
+        isDragging ? 'border-indigo-500 ring-2 ring-indigo-500/20 z-10' : 'border-gray-700/60 hover:border-indigo-500/50'
+      } rounded-xl p-4 cursor-grab active:cursor-grabbing hover:shadow-lg hover:shadow-indigo-500/5 transition-all duration-200`}
       onClick={() => onClick(card)}
     >
       {/* Priority + Delete */}
       <div className="flex items-start justify-between gap-2 mb-2">
         <PriorityBadge priority={card.priority} />
         <button
-          onClick={(e) => { e.stopPropagation(); onDelete(card); }}
-          className="opacity-0 group-hover:opacity-100 p-1 rounded text-gray-500 hover:text-red-400 hover:bg-red-500/10 transition-all"
+          onPointerDown={(e) => e.stopPropagation()} // Prevent drag start on button click
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete(card);
+          }}
+          className="opacity-0 group-hover:opacity-100 p-1 rounded text-gray-500 hover:text-red-400 hover:bg-red-500/10 transition-all pointer-events-auto cursor-pointer"
         >
           <Trash2 className="w-3.5 h-3.5" />
         </button>

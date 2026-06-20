@@ -26,8 +26,8 @@ export function AuthProvider({ children }) {
     return userData;
   };
 
-  const register = async (name, email, password, role = 'member') => {
-    const res = await registerUser({ name, email, password, role });
+  const register = async (name, email, password) => {
+    const res = await registerUser({ name, email, password });
     const { access_token, user: userData } = res.data;
     localStorage.setItem('taskflow_token', access_token);
     localStorage.setItem('taskflow_user', JSON.stringify(userData));

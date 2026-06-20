@@ -17,7 +17,7 @@ def register_user(db: Session, data: UserCreate) -> User:
         name=data.name,
         email=data.email,
         hashed_password=hash_password(data.password),
-        role=data.role if data.role in ("admin", "member") else "member",
+        role="member",
     )
     db.add(user)
     db.commit()

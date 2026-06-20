@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { X, Calendar, User, AlignLeft, Flag } from 'lucide-react';
+import { X, Calendar, Users, AlignLeft, Flag } from 'lucide-react';
+import { getUsers } from '../../api/users';
 
 export default function TaskModal({ card, columnId, columns, onClose, onSave, onDelete }) {
   const isEdit = !!card;
@@ -9,7 +10,24 @@ export default function TaskModal({ card, columnId, columns, onClose, onSave, on
   const [priority, setPriority] = useState(card?.priority || 'medium');
   const [dueDate, setDueDate] = useState(card?.due_date || '');
   const [selectedColumnId, setSelectedColumnId] = useState(card?.column_id || columnId);
+  const [assignedUserIds, setAssignedUserIds] = useState(
+    card?.assigned_users?.map((u) => u.id) || []
+  );
+  const [allUsers, setAllUsers] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  // Fetch available users for the assignment dropdown
+  useEffect(() => {
+    getUsers()
+      .then((res) => setAllUsers(res.data))
+      .catch(() => setAllUsers([]));
+  }, []);
+
+  const toggleUser = (userId) => {
+    setAssignedUserIds((prev) =>
+      prev.includes(userId) ? prev.filter((id) => id !== userId) : [...prev, userId]
+    );
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,7 +40,7 @@ export default function TaskModal({ card, columnId, columns, onClose, onSave, on
         priority,
         due_date: dueDate || null,
         column_id: selectedColumnId,
-        assigned_user_ids: [],
+        assigned_user_ids: assignedUserIds,
       });
       onClose();
     } finally {
@@ -43,7 +61,7 @@ export default function TaskModal({ card, columnId, columns, onClose, onSave, on
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-      <div className="bg-gray-900 border border-gray-700 rounded-2xl w-full max-w-lg shadow-2xl">
+      <div className="bg-gray-900 border border-gray-700 rounded-2xl w-full max-w-lg shadow-2xl max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-800">
           <h2 className="text-lg font-bold text-white">{isEdit ? 'Edit Card' : 'New Card'}</h2>
@@ -123,6 +141,41 @@ export default function TaskModal({ card, columnId, columns, onClose, onSave, on
               onChange={(e) => setDueDate(e.target.value)}
               className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500 transition-colors"
             />
+          </div>
+
+          {/* Assignees */}
+          <div>
+            <label className="flex items-center gap-1.5 text-sm font-medium text-gray-300 mb-1.5">
+              <Users className="w-3.5 h-3.5" /> Assign Users
+            </label>
+            {allUsers.length > 0 ? (
+              <div className="flex flex-wrap gap-2">
+                {allUsers.map((u) => {
+                  const selected = assignedUserIds.includes(u.id);
+                  return (
+                    <button
+                      key={u.id}
+                      type="button"
+                      onClick={() => toggleUser(u.id)}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all border ${
+                        selected
+                          ? 'bg-indigo-600/20 border-indigo-500/50 text-indigo-300'
+                          : 'bg-gray-800 border-gray-700 text-gray-400 hover:border-gray-600'
+                      }`}
+                    >
+                      <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
+                        selected ? 'bg-indigo-600 text-white' : 'bg-gray-700 text-gray-400'
+                      }`}>
+                        {u.name[0].toUpperCase()}
+                      </span>
+                      {u.name}
+                    </button>
+                  );
+                })}
+              </div>
+            ) : (
+              <p className="text-xs text-gray-500">No users available</p>
+            )}
           </div>
 
           {/* Actions */}

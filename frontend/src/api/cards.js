@@ -5,3 +5,4 @@ export const getCardsInColumn = (columnId) => api.get(`/columns/${columnId}/card
 export const createCard = (data) => api.post('/cards/', data);
 export const updateCard = (id, data) => api.patch(`/cards/${id}`, data);
 export const deleteCard = (id) => api.delete(`/cards/${id}`);
+export const moveCard = (id, data) => api.patch(`/cards/${id}/move`, data);

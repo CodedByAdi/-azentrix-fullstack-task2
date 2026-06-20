@@ -13,7 +13,7 @@ export default function BoardPage() {
   const navigate = useNavigate();
   const [board, setBoard] = useState(null);
   const [boardLoading, setBoardLoading] = useState(true);
-  const { columns, loading, fetchBoard, addCard, editCard, removeCard } = useCards(boardId);
+  const { columns, loading, fetchBoard, addCard, editCard, removeCard, moveCard } = useCards(boardId);
 
   // Modal state
   const [modalConfig, setModalConfig] = useState(null); // { mode: 'create'|'edit', card?, columnId? }
@@ -115,6 +115,7 @@ export default function BoardPage() {
           onAddCard={handleAddCard}
           onCardClick={handleCardClick}
           onCardDelete={handleCardDelete}
+          moveCard={moveCard}
         />
       </div>
 

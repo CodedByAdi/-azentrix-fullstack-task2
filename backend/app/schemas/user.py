@@ -7,7 +7,6 @@ class UserCreate(BaseModel):
     name: str
     email: EmailStr
     password: str
-    role: Optional[str] = "member"
 
 
 class UserLogin(BaseModel):
@@ -30,3 +29,6 @@ class TokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
     user: UserOut
+
+class UserRoleUpdate(BaseModel):
+    role: str

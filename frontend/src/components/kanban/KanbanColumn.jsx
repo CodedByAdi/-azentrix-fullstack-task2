@@ -1,5 +1,7 @@
 import { Plus } from 'lucide-react';
 import KanbanCard from './KanbanCard';
+import { useDroppable } from '@dnd-kit/core';
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 const COLUMN_ACCENT = {
   'To Do': 'border-t-gray-500',
@@ -10,8 +12,15 @@ const COLUMN_ACCENT = {
 export default function KanbanColumn({ column, onAddCard, onCardClick, onCardDelete }) {
   const accentClass = COLUMN_ACCENT[column.name] || 'border-t-indigo-500';
 
+  const { setNodeRef } = useDroppable({
+    id: column.id,
+  });
+
   return (
-    <div className={`flex flex-col w-72 flex-shrink-0 bg-gray-800/50 rounded-xl border border-gray-700/50 border-t-2 ${accentClass}`}>
+    <div
+      ref={setNodeRef}
+      className={`flex flex-col w-72 flex-shrink-0 bg-gray-800/50 rounded-xl border border-gray-700/50 border-t-2 ${accentClass}`}
+    >
       {/* Column Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-gray-700/50">
         <div className="flex items-center gap-2">
@@ -30,30 +39,26 @@ export default function KanbanColumn({ column, onAddCard, onCardClick, onCardDel
       </div>
 
       {/* Cards */}
-      <div className="flex flex-col gap-2 p-3 overflow-y-auto max-h-[calc(100vh-220px)] scrollbar-thin">
-        {column.cards && column.cards.length > 0 ? (
-          column.cards.map((card) => (
-            <KanbanCard
-              key={card.id}
-              card={card}
-              onClick={onCardClick}
-              onDelete={onCardDelete}
-            />
-          ))
-        ) : (
-          <div className="flex flex-col items-center justify-center py-10 text-center">
-            <div className="w-10 h-10 rounded-full bg-gray-700/50 flex items-center justify-center mb-2">
-              <Plus className="w-5 h-5 text-gray-500" />
+      <div className="flex flex-col gap-2 p-3 overflow-y-auto max-h-[calc(100vh-220px)] scrollbar-thin flex-1 min-h-[150px]">
+        <SortableContext items={(column.cards || []).map((c) => c.id)} strategy={verticalListSortingStrategy}>
+          {column.cards && column.cards.length > 0 ? (
+            column.cards.map((card) => (
+              <KanbanCard
+                key={card.id}
+                card={card}
+                onClick={onCardClick}
+                onDelete={onCardDelete}
+              />
+            ))
+          ) : (
+            <div className="flex flex-col items-center justify-center py-10 text-center pointer-events-none">
+              <div className="w-10 h-10 rounded-full bg-gray-700/50 flex items-center justify-center mb-2">
+                <Plus className="w-5 h-5 text-gray-500" />
+              </div>
+              <p className="text-xs text-gray-500">Drop cards here</p>
             </div>
-            <p className="text-xs text-gray-500">No cards yet</p>
-            <button
-              onClick={() => onAddCard(column.id)}
-              className="text-xs text-indigo-400 hover:text-indigo-300 mt-1 transition-colors"
-            >
-              Add one
-            </button>
-          </div>
-        )}
+          )}
+        </SortableContext>
       </div>
     </div>
   );

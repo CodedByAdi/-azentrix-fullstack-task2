@@ -34,6 +34,7 @@ def get_cards_in_column(
     col = db.query(TaskColumn).filter(TaskColumn.id == column_id).first()
     if not col:
         raise HTTPException(status_code=404, detail="Column not found")
+    _verify_board_access(db, col.board_id, current_user.id)
     return get_cards_for_column(db, column_id)
 
 
@@ -62,6 +63,7 @@ def update_column(
     col = db.query(TaskColumn).filter(TaskColumn.id == column_id).first()
     if not col:
         raise HTTPException(status_code=404, detail="Column not found")
+    _verify_board_access(db, col.board_id, current_user.id)
     if data.name is not None:
         col.name = data.name
     if data.position is not None:
@@ -80,6 +82,7 @@ def delete_column(
     col = db.query(TaskColumn).filter(TaskColumn.id == column_id).first()
     if not col:
         raise HTTPException(status_code=404, detail="Column not found")
+    _verify_board_access(db, col.board_id, current_user.id)
     db.delete(col)
     db.commit()
 

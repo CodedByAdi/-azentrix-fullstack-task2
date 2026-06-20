@@ -10,7 +10,6 @@ export default function RegisterPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('member');
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -22,7 +21,7 @@ export default function RegisterPage() {
     }
     setLoading(true);
     try {
-      await register(name, email, password, role);
+      await register(name, email, password);
       toast.success('Account created! Welcome to TaskFlow 🎉');
       navigate('/dashboard');
     } catch (err) {
@@ -106,17 +105,6 @@ export default function RegisterPage() {
               </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">Role</label>
-              <select
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500 transition-colors"
-              >
-                <option value="member">Member</option>
-                <option value="admin">Admin</option>
-              </select>
-            </div>
 
             <button
               type="submit"
