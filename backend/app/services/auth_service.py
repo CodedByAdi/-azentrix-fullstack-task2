@@ -13,11 +13,15 @@ def register_user(db: Session, data: UserCreate) -> User:
             detail="An account with this email already exists",
         )
 
+    # First user registered in the system becomes an admin automatically
+    is_first_user = db.query(User).count() == 0
+    role = "admin" if is_first_user else "member"
+
     user = User(
         name=data.name,
         email=data.email,
         hashed_password=hash_password(data.password),
-        role="member",
+        role=role,
     )
     db.add(user)
     db.commit()
