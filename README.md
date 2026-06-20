@@ -15,7 +15,7 @@
 ## Live Demo 
 
 - **Frontend (Vercel):** [https://azentrix-fullstack-task2-mu.vercel.app/](https://azentrix-fullstack-task2-mu.vercel.app/)
-- **Backend API (Railway):** [Insert Railway URL Here]
+- **Backend API (Railway):** [https://azentrix-fullstack-task2-production.up.railway.app](https://azentrix-fullstack-task2-production.up.railway.app)
 
 ---
 
