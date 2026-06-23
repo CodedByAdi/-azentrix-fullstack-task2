@@ -17,6 +17,10 @@
 - **Frontend (Vercel):** [https://azentrix-fullstack-task2-mu.vercel.app/](https://azentrix-fullstack-task2-mu.vercel.app/)
 - **Backend API (Railway):** [https://azentrix-fullstack-task2-production.up.railway.app](https://azentrix-fullstack-task2-production.up.railway.app)
 
+> **✨ Quick Evaluation:** You can use the following demo credentials to explore a pre-populated account with boards and tasks, without needing to register!
+> - **Email:** `demo@taskflow.com`
+> - **Password:** `demo123`
+
 ---
 
 ## Screenshots
