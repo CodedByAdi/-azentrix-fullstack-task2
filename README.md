@@ -18,8 +18,8 @@
 - **Backend API (Railway):** [https://azentrix-fullstack-task2-production.up.railway.app](https://azentrix-fullstack-task2-production.up.railway.app)
 
 > **✨ Quick Evaluation:** You can use the following demo credentials to explore a pre-populated account with boards and tasks, without needing to register!
-> - **Email:** `demo@taskflow.com`
-> - **Password:** `demo123`
+> - **Email:** `Admin@gmail.com`
+> - **Password:** `Admin@123`
 
 ---
 
@@ -32,6 +32,10 @@
 | Board View | Task Management |
 |---|---|
 | ![Board View](screenshots/Board-view.png) | ![Task Management](screenshots/task-management.png) |
+
+| User Management | Create New Card |
+|---|---|
+| ![User Management](screenshots/user-management.png) | ![Create New Card](screenshots/new-card.png) |
 
 ---
 
