@@ -41,7 +41,7 @@
 
 ## Demo Video
 
-[▶️ Watch the 5-minute Loom Walkthrough](https://www.loom.com/)
+[▶️ Watch the 5-minute Loom Walkthrough](https://www.loom.com/share/f074a33d260e40ffae7d40d1a93bfecb)
 
 ---
 
